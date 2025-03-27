@@ -7,7 +7,7 @@ const Area = require('../models').area;
 
 router.get('/findAll/json', function (req, res, next) {
   Servicios.findAll({
-    attributes: { exclude: ['id','updatedAt'] },
+    attributes: {attributes: { exclude: ['id','createdAt','updatedAt'] }},
     include: [{ model: Area, attributes: ['nombre'], through: { attributes: [] }
     }],
   }).then(servicios => {
@@ -17,7 +17,7 @@ router.get('/findAll/json', function (req, res, next) {
 });
 
 router.get('/findAll/view', function (req, res, next) {
-  Servicios.findAll({attributes: { exclude: ['id','updatedAt'] },})
+  Servicios.findAll({attributes: { exclude: ['id','createdAt','updatedAt'] },})
   .then(servicios => {
     res.render('servicios', { title: 'Servicios', arrServicios: servicios });
   })
@@ -29,9 +29,8 @@ router.get('/findAllByRange/json', function (req, res, next) {
   let higher = parseFloat(req.query.higher);
 
   Servicios.findAll({
-    attributes: {exclude: ["updatedAt"]},
-    include: [{ model: Area, attributes: ['nombre'], through: { attributes: [] }}],
-    where: { calificacion: { [Op.between]: [lower, higher] }}
+    attributes: { exclude: ['id','createdAt','updatedAt'] },
+    where: { precio: { [Op.between]: [lower, higher] }}
   })
     .then(servicios => {
       res.render('servicios', { title: 'Servicios', arrServicios: servicios });
@@ -44,12 +43,10 @@ router.get('/findAllByRange/json', function (req, res, next) {
 router.get('/findAllById/:id/json', function (req, res, next) {
   let id = parseInt(req.params.id);
 
-  Servicios.findAll({
-    attributes: {exclude: ["updatedAt"]},
-    include: [{ model: Area, attributes: ['nombre'], through: { attributes: [] }}],
-    where: { [Op.and]: [{id: id}] }
+  Servicios.findAll({attributes: { exclude: ['id','createdAt','updatedAt'] },
+    where: { [Op.and]: [{id_servicio: id}] }
   })
-    .then(fotos => {
+    .then(servicios => {
       res.render('servicios', { title: 'Servicios', arrServicios: servicios });
       // res.json(fotos);
     })

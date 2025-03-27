@@ -89,11 +89,11 @@
     document.getElementById('idForm').addEventListener('submit', function(event) {
       event.preventDefault();
       const id = document.getElementById('fotoId').value;
-      window.location.href = `/fotos/findAllById/${id}/json`;
+      window.location.href = `/servicios/findAllById/${id}/json`;
     });
 
     document.getElementById('showAll').addEventListener('click', function() {
-      window.location.href = '/fotos/findAll/view';
+      window.location.href = '/servicios/findAll/view';
     });
   </script>
 
